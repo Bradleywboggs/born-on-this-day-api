@@ -6,13 +6,13 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 
 public class BornOnThisDay {
-    public static void main(String[] args) throws IOException, JSONException {
-        System.out.println(convertAndFilterResponse(getResponse("04", "08")));
-    }
+
     /**
      * BornOnThisDay.getResponse()
      * Sends HTTP request for 'births' to Wikimedia's 'On this day' api. The response is a JSON object,
@@ -21,22 +21,20 @@ public class BornOnThisDay {
      *
      * @param mm a two-character String representing the two digit month given by the user to be appended
      *           to the url path.
-     *
      * @param dd a two character String representing the two digit day given by the user to be appended
      *           to the url path
-     *
-     * @return the response converted to a String
-     *
+     * @return response.toString()
      * @author Bradley Boggs, bradleywboggs@gmail.com
      */
 
     public static String getResponse(String mm, String dd) {
-
-        try {
-            String url = "https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/" + mm + "/" + dd;
+        try{
+            String url = String.format("https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/%s/%s", mm, dd);
+            //Instantiated URL object
             URL obj = new URL(url);
+           // Open Connection
             HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-
+            
             con.setRequestMethod("GET");
 
             //add request header
@@ -46,26 +44,32 @@ public class BornOnThisDay {
             System.out.println("\nSending 'GET' Request to URL: " + url);
             System.out.println("Response Code : " + responseCode);
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
 
+            BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+            // Read in line
             String inputLine;
             StringBuffer response = new StringBuffer();
             while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            response.append(inputLine);
 
             }
             in.close();
+            // Parse response as String
             return response.toString();
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // In case of failure, should I retry?
-            return "IO Exception: "+ e.toString();
+        } catch (MalformedURLException m) {
+            m.printStackTrace();
+            return String.format("MalformedUrlException: %s", m.toString());
+        } catch (ProtocolException p) {
+            p.printStackTrace();
+            return String.format("ProtocolException: %s", p.toString());
+        } catch (IOException i) {
+            i.printStackTrace();
+            return String.format("IO Exception: %s", i.toString());
         }
 
-    }
+}
     /**
      * BornOnThisDay.convertAndFilterResponse() parses and filters the return value of getResponse()
      * to produce a new JSON Array to be used to render the front end.
@@ -74,7 +78,7 @@ public class BornOnThisDay {
      *
      * @return JSONArray of objects with the following key-value pairs:
      * "name"-name of the person, "year"-the year of their birth, "tagline"--a phrase describing the person,
-     * "description" - a 2-3 sentence description of the person, "imageUrl"-the url of a thumbnail image of the perso
+     * "description" - a 2-3 sentence description of the person, "imageUrl"-the url of a thumbnail image of the person
      *
      * @author Bradley Boggs, bradleywboggs@gmail.com
      */
@@ -131,7 +135,7 @@ public class BornOnThisDay {
             return returnArray;
         } catch (JSONException e) {
             e.printStackTrace();
-            return null; 
+            return null;
 
         }
 
