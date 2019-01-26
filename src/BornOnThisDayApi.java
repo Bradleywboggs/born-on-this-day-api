@@ -11,7 +11,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 
-public class BornOnThisDay {
+public class BornOnThisDayApi {
 
     /**
      * BornOnThisDay.getResponse()
@@ -32,9 +32,10 @@ public class BornOnThisDay {
             String url = String.format("https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/%s/%s", mm, dd);
             //Instantiated URL object
             URL obj = new URL(url);
+
            // Open Connection
             HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-            
+
             con.setRequestMethod("GET");
 
             //add request header
@@ -47,6 +48,7 @@ public class BornOnThisDay {
 
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
+
             // Read in line
             String inputLine;
             StringBuffer response = new StringBuffer();
@@ -54,7 +56,9 @@ public class BornOnThisDay {
             response.append(inputLine);
 
             }
+
             in.close();
+
             // Parse response as String
             return response.toString();
 
@@ -83,7 +87,7 @@ public class BornOnThisDay {
      * @author Bradley Boggs, bradleywboggs@gmail.com
      */
 
-    public static JSONArray convertAndFilterResponse(String response) {
+    public static JSONArray parseAndFilterResponse(String response) {
         try {
             JSONObject initJSONObject = new JSONObject(response);
             JSONArray initArray = (JSONArray) initJSONObject.get("births");
@@ -135,7 +139,8 @@ public class BornOnThisDay {
             return returnArray;
         } catch (JSONException e) {
             e.printStackTrace();
-            return null;
+            JSONArray emptyArray = new JSONArray();
+            return emptyArray;
 
         }
 
