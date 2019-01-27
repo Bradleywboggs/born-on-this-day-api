@@ -62,15 +62,9 @@ public class BornOnThisDayApi {
             // Parse response as String
             return response.toString();
 
-        } catch (MalformedURLException m) {
-            m.printStackTrace();
-            return String.format("MalformedUrlException: %s", m.toString());
-        } catch (ProtocolException p) {
-            p.printStackTrace();
-            return String.format("ProtocolException: %s", p.toString());
-        } catch (IOException i) {
-            i.printStackTrace();
-            return String.format("IO Exception: %s", i.toString());
+        } catch (MalformedURLException | ProtocolException | IOException e) {
+            e.printStackTrace();
+            return String.format("Exception: %s", e.toString());
         }
 
 }
