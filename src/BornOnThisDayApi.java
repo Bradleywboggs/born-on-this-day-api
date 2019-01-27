@@ -35,15 +35,12 @@ public class BornOnThisDayApi {
         try{
 
             String url = String.format("https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/%s/%s", mm, dd);
-            // Instantiate URL object
             URL obj = new URL(url);
 
-            // Open Connection
             HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
             con.setRequestMethod("GET");
 
-            // Add request header
             con.setRequestProperty("Api-User-Agent", "sean.zicari@gmail.com");
             int responseCode = con.getResponseCode();
 
@@ -54,7 +51,6 @@ public class BornOnThisDayApi {
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
 
-            // Read in line
             String inputLine;
             StringBuffer response = new StringBuffer();
             while ((inputLine = in.readLine()) != null) {
@@ -64,7 +60,6 @@ public class BornOnThisDayApi {
 
             in.close();
 
-            // Parse response as String
             return response.toString();
 
         } catch (MalformedURLException | ProtocolException | IOException e) {
@@ -95,13 +90,10 @@ public class BornOnThisDayApi {
             JSONObject initJSONObject = new JSONObject(response);
             JSONArray initArray = (JSONArray) initJSONObject.get("births");
 
-
-            // Instantiate a JSONArray for the return value
             JSONArray returnArray = new JSONArray();
 
             for (int i = 0; i < initArray.length(); i++) {
 
-                //Instantiate a JSONObject as an accumulator
                 JSONObject returnArrayElement = new JSONObject();
 
                 JSONObject arrayElement = (JSONObject) initArray.opt(i);
@@ -142,7 +134,6 @@ public class BornOnThisDayApi {
 
                 }
 
-                // Append the accumulator JSONOBject to the returnArray
                 returnArray.put(returnArrayElement);
 
             }
