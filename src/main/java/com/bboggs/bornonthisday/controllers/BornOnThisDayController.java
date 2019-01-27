@@ -20,12 +20,9 @@ public class BornOnThisDayController {
         return "form";
     }
 
-
     @PostMapping("results")
     public String processForm(Model model, @RequestParam int mm, int dd) {
-        String monthMonth = String.format("%s", mm);
-        String dayDay = String.format("%s", dd);
-        JSONArray jsonArray = parseAndFilterResponse(getResponse(monthMonth, dayDay));
+        JSONArray jsonArray = parseAndFilterResponse(getResponse(mm, dd));
         model.addAttribute("title", "Born On This Day");
         model.addAttribute("jsonArray", jsonArray);
         return "form-result";
