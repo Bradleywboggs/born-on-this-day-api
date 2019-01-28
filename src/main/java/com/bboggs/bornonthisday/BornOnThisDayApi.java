@@ -102,25 +102,27 @@ public class BornOnThisDayApi {
 
                 JSONObject arrayElement = (JSONObject) initArray.opt(i);
 
-                // Iterate through the JSON Objects checking for a desired key, and if present, store the value with a new key in the accumulator
-                if (arrayElement.has("year")) {
-                    Integer year = (Integer) arrayElement.opt("year");
-                    returnArrayElement.put("year", year);
-                }
+                // Iterate through the JSON Objects checking for a desired key, and if present, store the value
+                // with a new key in the accumulator
 
                 JSONArray pagesArray = (JSONArray) arrayElement.opt("pages");
                 for (int j = 0; j < pagesArray.length(); j++) {
                     JSONObject pagesElement = (JSONObject) pagesArray.opt(j);
+
+                    // Filter unwanted results
+                    if (pagesElement.has("description")) {
+                        if (pagesElement.opt("description").equals("Date")){
+                            continue;
+                        }
+                        String tagline = (String) pagesElement.opt("description");
+                        returnArrayElement.put("tagline", tagline);
+                    }
 
                     if (pagesElement.has("extract")) {
                         String description = (String) pagesElement.opt("extract");
                         returnArrayElement.put("description", description);
                     }
 
-                    if (pagesElement.has("description")) {
-                        String tagline = (String) pagesElement.opt("description");
-                        returnArrayElement.put("tagline", tagline);
-                    }
 
                     if (pagesElement.has("titles")) {
                         JSONObject titlesObject = (JSONObject) pagesElement.opt("titles");
@@ -136,6 +138,11 @@ public class BornOnThisDayApi {
                         returnArrayElement.put("imageUrl", imageUrl);
                     }
 
+                }
+
+                if (arrayElement.has("year")) {
+                    Integer year = (Integer) arrayElement.opt("year");
+                    returnArrayElement.put("year", year);
                 }
 
                 returnArray.put(returnArrayElement);
