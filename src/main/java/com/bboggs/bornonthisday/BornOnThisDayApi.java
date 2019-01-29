@@ -113,16 +113,27 @@ public class BornOnThisDayApi {
 
                     // Filter unwanted results
                     if (pagesElement.has("description")) {
-                        if (pagesElement.opt("description").equals("Date")){
+                        if (pagesElement.opt("description").equals("Date") || pagesElement.opt("description").equals("date")){
                             continue;
                         }
+
                         String tagline = (String) pagesElement.opt("description");
                         returnArrayElement.put("tagline", tagline);
                     }
 
+                    if (!pagesElement.has("thumbnail")) {
+                        continue;
+
+                    }
+                        JSONObject thumbnailObject = (JSONObject) pagesElement.opt("thumbnail");
+                        String imageUrl = (String) thumbnailObject.opt("source");
+                        returnArrayElement.put("imageUrl", imageUrl);
+
                     if (pagesElement.has("extract")) {
                         String description = (String) pagesElement.opt("extract");
-                        returnArrayElement.put("description", description);
+                        if (description.contains("American")) {
+                            returnArrayElement.put("description", description);
+                        }
                     }
 
 
@@ -134,20 +145,17 @@ public class BornOnThisDayApi {
                         }
                     }
 
-                    if (pagesElement.has("thumbnail")) {
-                        JSONObject thumbnailObject = (JSONObject) pagesElement.opt("thumbnail");
-                        String imageUrl = (String) thumbnailObject.opt("source");
-                        returnArrayElement.put("imageUrl", imageUrl);
-                    }
-
                 }
 
                 if (arrayElement.has("year")) {
-                    Integer year = (Integer) arrayElement.opt("year");
-                    returnArrayElement.put("year", year);
+                    if (1910 <= (Integer) arrayElement.opt("year") && (Integer) arrayElement.opt("year") <= 1970) {
+                        Integer year = (Integer) arrayElement.opt("year");
+                        returnArrayElement.put("year", year);
+                    }
                 }
 
-                returnArray.put(returnArrayElement);
+                if(returnArrayElement.has("description") && (returnArrayElement.has("name") && (returnArrayElement.has("imageUrl") && (returnArrayElement.has("year")))))
+                    returnArray.put(returnArrayElement);
 
             }
 
