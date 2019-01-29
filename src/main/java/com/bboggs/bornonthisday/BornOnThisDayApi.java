@@ -113,7 +113,8 @@ public class BornOnThisDayApi {
 
                     // Filter unwanted results
                     if (pagesElement.has("description")) {
-                        if (pagesElement.opt("description").equals("Date") || pagesElement.opt("description").equals("date")){
+                        if (pagesElement.opt("description").equals("Date") ||
+                            pagesElement.opt("description").equals("date"))   {
                             continue;
                         }
 
@@ -139,6 +140,7 @@ public class BornOnThisDayApi {
 
                     if (pagesElement.has("titles")) {
                         JSONObject titlesObject = (JSONObject) pagesElement.opt("titles");
+
                         if (titlesObject.has("display")) {
                             String name = (String) titlesObject.opt("display");
                             returnArrayElement.put("name", name);
@@ -148,13 +150,17 @@ public class BornOnThisDayApi {
                 }
 
                 if (arrayElement.has("year")) {
-                    if (1910 <= (Integer) arrayElement.opt("year") && (Integer) arrayElement.opt("year") <= 1970) {
+                    if (1910 <= (Integer) arrayElement.opt("year") &&
+                       (Integer) arrayElement.opt("year") <= 1970) {
                         Integer year = (Integer) arrayElement.opt("year");
                         returnArrayElement.put("year", year);
                     }
                 }
 
-                if(returnArrayElement.has("description") && (returnArrayElement.has("name") && (returnArrayElement.has("imageUrl") && (returnArrayElement.has("year")))))
+                if (returnArrayElement.has("description") &&
+                   (returnArrayElement.has("name")        &&
+                   (returnArrayElement.has("imageUrl")    &&
+                   (returnArrayElement.has("year")))))
                     returnArray.put(returnArrayElement);
 
             }
