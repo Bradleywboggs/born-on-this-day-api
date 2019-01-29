@@ -32,12 +32,14 @@ public class BornOnThisDayApi {
      *         if failure: error message as String
      */
 
+    static final String URL_TEMPLATE =
+            "https://en.wikipedia.org/api/rest_v1/feed/onthisday/births";
+
     public static String getResponse(int mm, int dd) {
 
         try{
 
-            String url = String.format(
-                    "https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/%s/%s", mm, dd);
+            String url = String.format("%s/%s/%s", URL_TEMPLATE, mm, dd);
 
             URL obj = new URL(url);
 

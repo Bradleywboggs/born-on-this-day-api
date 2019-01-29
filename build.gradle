@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.19.RELEASE'
+		springBootVersion = '2.1.2.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -12,6 +12,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 group = 'com.bboggs'
 version = '0.0.1-SNAPSHOT'
@@ -23,7 +24,6 @@ repositories {
 
 dependencies {
 	compile 'org.json:json:20171018'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
