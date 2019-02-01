@@ -32,7 +32,7 @@ public class BornOnThisDayApi {
      *         if failure: error message as String
      */
 
-    static final String URL_TEMPLATE =
+    private static final String URL_TEMPLATE =
             "https://en.wikipedia.org/api/rest_v1/feed/onthisday/births";
 
     public static String getResponse(int mm, int dd) {
@@ -54,19 +54,18 @@ public class BornOnThisDayApi {
             System.out.println("Response Code : " + responseCode);
 
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()))) {
 
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
 
+                }
+
+                return response.toString();
             }
-
-            in.close();
-
-            return response.toString();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,7 +100,6 @@ public class BornOnThisDayApi {
             for (int i = 0; i < initArray.length(); i++) {
 
                 JSONObject returnArrayElement = new JSONObject();
-
                 JSONObject arrayElement = (JSONObject) initArray.opt(i);
 
                 // Iterate through the JSON Objects checking for a desired key, and if present, store the value
@@ -136,7 +134,6 @@ public class BornOnThisDayApi {
                             returnArrayElement.put("description", description);
                         }
                     }
-
 
                     if (pagesElement.has("titles")) {
                         JSONObject titlesObject = (JSONObject) pagesElement.opt("titles");
