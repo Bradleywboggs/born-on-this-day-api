@@ -14,6 +14,7 @@ import static com.bboggs.bornonthisday.BornOnThisDayApi.parseAndFilterResponse;
 import static com.bboggs.bornonthisday.BornOnThisDayApi.getResponse;
 
 @RestController
+@CrossOrigin(origins = {"botd.chonkeys.com", "web.botd.chonkeys.local"})
 public class BornOnThisDayController {
     @GetMapping(value = "onthisday", produces = "application/json")
     String processForm(@RequestParam int mm, @RequestParam int dd) throws IOException {
