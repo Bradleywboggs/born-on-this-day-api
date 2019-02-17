@@ -15,7 +15,7 @@ import static com.bboggs.bornonthisday.BornOnThisDayApi.getResponse;
 
 @RestController
 public class BornOnThisDayController {
-    @CrossOrigin(origins = {"botd.chonkeys.com", "web.botd.chonkeys.local"})
+    @CrossOrigin
     @GetMapping(value = "onthisday", produces = "application/json")
     String processForm(@RequestParam int mm, @RequestParam int dd) throws IOException {
         JSONArray jsonArray = parseAndFilterResponse(getResponse(mm, dd));
